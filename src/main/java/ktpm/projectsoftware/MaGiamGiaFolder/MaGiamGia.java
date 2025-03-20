@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import ktpm.projectsoftware.DanhMucFolder.DanhMuc;
+import ktpm.projectsoftware.SanPhamThuocDonHang.SanPhamThuocDonHang;
 import lombok.Data;
 
 @Data
@@ -25,6 +26,9 @@ public class MaGiamGia {
     private Date NgayHetHan;
     private int SoLuotConLai;
     private int PhanTramGiamGia;
-    @OneToMany(mappedBy = "magiamgia")
-    private Collection<DanhMuc> danhmuc;
+    @ManyToOne
+    @JoinColumn(name = "danh_mucid",nullable=false)
+    private DanhMuc danhmuc;
+    @OneToMany(mappedBy="magiamgia")
+    private Collection<SanPhamThuocDonHang> sanphamthuocdonhang;
 }

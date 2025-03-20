@@ -11,9 +11,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import ktpm.projectsoftware.NguoiDungFolder.NguoiDung;
 import ktpm.projectsoftware.SanPhamFolder.SanPham;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class DanhGia {
     @Id 
     @GeneratedValue(strategy=GenerationType.IDENTITY)

@@ -28,8 +28,6 @@ public class DichVuNguoiDung {
     @Autowired
     EmailSender sender;
     @Autowired
-    SmsService sms;
-    @Autowired
     SanPhamRepository sprepo;
 
     public NguoiDung timNguoiDungHienTai() {
@@ -39,25 +37,6 @@ public class DichVuNguoiDung {
         NguoiDung nd = repo.findByten(ten);
         return nd;
     }
-
-    public String formatToE164(String phoneNumber) {
-        // Remove all non-digit characters (spaces, dashes, etc.)
-        String cleanedNumber = phoneNumber.replaceAll("\\D", "");
-
-        // Check if the number starts with "0" (local format)
-        if (cleanedNumber.startsWith("0") && cleanedNumber.length() == 10) {
-            return "+84" + cleanedNumber.substring(1); // Replace "0" with "+84"
-        }
-
-        // Check if the number is already in international format
-        if (cleanedNumber.startsWith("84") && cleanedNumber.length() == 11) {
-            return "+" + cleanedNumber; // Add "+" if missing
-        }
-
-        // If the number is invalid, return an error message
-        throw new IllegalArgumentException("Invalid Vietnamese phone number: " + phoneNumber);
-    }
-
     public String taoMa() {
         Random random = new Random();
         int number = random.nextInt(100000); // Generates 0 to 99999
@@ -84,8 +63,6 @@ public class DichVuNguoiDung {
             nd.setThoiHan(LocalDateTime.now().plusHours(1));
             if (isValidEmail(nd.getTen()))
                 sender.sendEmail(ma, nd.getTen());
-            else
-                sms.sendSms(formatToE164(nd.getTen()), "Ma xac nhan: " + ma);
             return repo.save(nd);
 
         } else if (ndht.isDaDangKy() == false) {
@@ -95,8 +72,6 @@ public class DichVuNguoiDung {
             ndht.setThoiHan(LocalDateTime.now().plusHours(1));
             if (isValidEmail(ndht.getTen()))
                 sender.sendEmail(ma, ndht.getTen());
-            else
-                sms.sendSms(ndht.getTen(), "Ma xac nhan: " + ma);
             return repo.save(ndht);
         } else
             throw new NguoiDungDaDangKy("Tai khoan da co nguoi dang ky");

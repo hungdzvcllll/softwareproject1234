@@ -69,13 +69,10 @@ public class GiaoDienNguoiDung {
     }
 
     @PostMapping("/signin")
-    public ArrayList<DonHang> authenticateUser(@RequestBody NguoiDung nd)throws Exception {
+    public void authenticateUser(@RequestBody NguoiDung nd)throws Exception {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 nd.getTen(), nd.getMatKhau()));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        NguoiDung ndht=dv.timNguoiDungHienTai();
-        return dvdonhang.danhSachDonHangNguoiDung(ndht.getID());
     }
 
     @ExceptionHandler(NguoiDungDaDangKy.class)

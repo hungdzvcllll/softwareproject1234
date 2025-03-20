@@ -32,35 +32,39 @@ import java.io.IOException;
 @EnableWebSecurity
 public class SoftwareSecurity {
 
-     @Bean
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http    
+        http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/dang_ky", "/xac_nhan_dang_ky","/tim_kiem_san_pham","/chi_tiet_san_pham","/signin","them_vao_gio_hang")
+                        .requestMatchers("/", "thong_tin", "chinh_sach", "danh_gia", "thanhtoan", "ketquathanhtoan",
+                                "huydonhang", "/dang_ky", "/xac_nhan_dang_ky", "/tim_kiem_san_pham",
+                                "/chi_tiet_san_pham", "/signin", "them_vao_gio_hang")
                         .permitAll()
-                        .requestMatchers("abc").hasAnyAuthority("KhachHang")
+                        .requestMatchers("abcd").hasAnyAuthority("KhachHang")
                         .anyRequest().authenticated())
-                        
-                 //.formLogin((form) -> form
-                 //.loginPage("/login")
-                 //.usernameParameter("ten")
-                 //.permitAll())
+
+                // .formLogin((form) -> form
+                // .loginPage("/login")
+                // .usernameParameter("ten")
+                // .permitAll())
 
                 .logout((logout) -> logout.permitAll());
 
         return http.build();
     }
 
-     @Bean
+    @Bean
     public UserDetailsService userDetailsService() {
         return new MyUserDetailService();
     }
-     @Bean
+
+    @Bean
     public AuthenticationManager authenticationManager(
-                                 AuthenticationConfiguration configuration) throws Exception {
+            AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();

@@ -6,6 +6,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import ktpm.projectsoftware.DonHangFolder.DonHang;
+import ktpm.projectsoftware.MaGiamGiaFolder.MaGiamGia;
 import ktpm.projectsoftware.SanPhamFolder.SanPham;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SanPhamThuocDonHang {
     @EmbeddedId
-    CompositeKey1 key;
-   
+    private CompositeKey1 key;
+
     private int SoLuong;
+    private long giaGoc;
+    @ManyToOne
+    @JoinColumn(name = "ma_giam_gia_id", nullable = true)
+    private MaGiamGia magiamgia;
 }

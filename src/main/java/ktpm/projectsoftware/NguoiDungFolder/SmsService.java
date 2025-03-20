@@ -1,6 +1,6 @@
 package ktpm.projectsoftware.NguoiDungFolder;
 
-import com.twilio.Twilio;
+/*import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,4 +30,4 @@ public class SmsService {
 
         return "SMS sent successfully! SID: " + sms.getSid();
     }
-}
+}*/

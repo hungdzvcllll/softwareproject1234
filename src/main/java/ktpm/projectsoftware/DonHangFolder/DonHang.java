@@ -25,6 +25,7 @@ public class DonHang {
     private int ID;
     private boolean TrangThaiDonHang;
     private boolean NhanHang;
+    private boolean daThanhToan;
     private long GiaTriDonHang;
     @ManyToOne
     @JoinColumn(name="NguoiDungID",nullable=false)

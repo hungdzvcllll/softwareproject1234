@@ -26,7 +26,6 @@ public class DanhMuc{
       @JsonIgnore
       @OneToMany(mappedBy="danhmuc")
       Collection<SanPham> sanpham;
-      @ManyToOne
-      @JoinColumn(name="MaGiamGia",nullable=true)
-      private MaGiamGia magiamgia;
+      @OneToMany(mappedBy="danhmuc")
+      private Collection<MaGiamGia> magiamgia;
 }
