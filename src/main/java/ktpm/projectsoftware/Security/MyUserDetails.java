@@ -9,7 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import ktpm.projectsoftware.NguoiDungFolder.NguoiDung;
+import ktpm.projectsoftware.entity.NguoiDung;
 
 
 @Service

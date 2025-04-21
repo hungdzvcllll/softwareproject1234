@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import ktpm.projectsoftware.NguoiDungFolder.NguoiDung;
-import ktpm.projectsoftware.NguoiDungFolder.NguoiDungRepository;
+import ktpm.projectsoftware.entity.NguoiDung;
+import ktpm.projectsoftware.repository.NguoiDungRepository;
 
 
 

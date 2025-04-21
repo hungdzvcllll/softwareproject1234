@@ -37,11 +37,11 @@ public class SoftwareSecurity {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "thong_tin", "chinh_sach", "danh_gia", "thanhtoan", "ketquathanhtoan",
+                        .requestMatchers("/","huyMa","themMa","xacNhanNhanHang","tuChoiDonHang","GioHang", "themSanPham","xoaSanPham","thong_tin", "chinh_sach", "danh_gia", "thanhtoan", "ketquathanhtoan",
                                 "huydonhang", "/dang_ky", "/xac_nhan_dang_ky", "/tim_kiem_san_pham",
                                 "/chi_tiet_san_pham", "/signin", "them_vao_gio_hang")
                         .permitAll()
-                        .requestMatchers("abcd").hasAnyAuthority("KhachHang")
+                        //.requestMatchers("abc").hasAnyAuthority("KhachHang")
                         .anyRequest().authenticated())
 
                 // .formLogin((form) -> form
