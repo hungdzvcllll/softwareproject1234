@@ -9,6 +9,8 @@ import ktpm.projectsoftware.service.DichVuDonHang;
 import ktpm.projectsoftware.service.ajaxServlet;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,26 +22,60 @@ public class GiaoDienDonHang {
     @Autowired
     DichVuDonHang dvdh;
 
-    @GetMapping("/huydonhang")
-    public void huyDonHang(@RequestParam int don_hangid) {
-        dvdh.huyDonHang(don_hangid);
+     @GetMapping("/huydonhang")
+     public ResponseEntity<?> huyDonHang(@RequestParam int don_hangid) {
+        try{
+            dvdh.huyDonHang(don_hangid);
+            return  ResponseEntity.ok("hủy đơn thành công");
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
-    @GetMapping("danhsachhientai")
-    public ArrayList<DonHang> danhSachHienTai(int id) {
-        return dvdh.danhSachDonHangNguoiDung();
+    @GetMapping("/danhsachhientai")
+     public ResponseEntity<?> danhSachHienTai() {
+        try{
+            
+            return  ResponseEntity.ok(dvdh.danhSachDonHangNguoiDung());
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
-
     @GetMapping("/huyThanhToan")
-    public void huyThanhToan(@RequestParam int don_hangid) {
-        dvdh.huyThanhToan(don_hangid);
+     public ResponseEntity<?> huyThanhToan(@RequestParam int don_hangid) {
+        try{
+            dvdh.huyThanhToan(don_hangid);
+            return  ResponseEntity.ok("hủy thanh toán thành công");
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
-    @PostMapping("/tuChoiDonHang")
-    public void tuChoiDonHang(@RequestParam int id){
-        dvdh.tuChoiDonHang(id);
+     @GetMapping("/tuChoiDonHang")
+     public ResponseEntity<?> tuChoiDonHang(@RequestParam int id) {
+        try{
+            dvdh.tuChoiDonHang(id);
+            return  ResponseEntity.ok("từ chối thành công");
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
     @PostMapping("/xacNhanNhanHang")
-    public void xacNhanNhanHang(@RequestParam int id){
-        dvdh.xacNhanNhanHang(id);
+    public ResponseEntity<?> xacNhanNhanHang(@RequestParam int id){
+        try{
+            dvdh.xacNhanNhanHang(id);
+            return    ResponseEntity.ok("xác nhận thành công");
+        }
+         catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+     
+    }
+    @GetMapping("/TongDoanhThu")
+    public ResponseEntity<?> tongDoanhThu(){
+        return ResponseEntity.ok(dvdh.tongDoanhThu());
     }
 }

@@ -2,6 +2,8 @@ package ktpm.projectsoftware.entity;
 
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +29,7 @@ public class DonHang {
     private long GiaTriDonHang;
     @ManyToOne
     @JoinColumn(name="NguoiDungID",nullable=false)
+    @JsonIgnore
     NguoiDung nguoidung;
    
 }

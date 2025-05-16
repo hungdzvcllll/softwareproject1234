@@ -4,8 +4,11 @@ import ktpm.projectsoftware.service.CuaHangService;
 import ktpm.projectsoftware.service.ajaxServlet;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -13,11 +16,23 @@ public class CuaHangController {
     @Autowired
     CuaHangService chService;
     @PostMapping("/thong_tin")
-    public void capNhatThongTin(@RequestParam String thong_tin) {
-        chService.capNhatThongTin(thong_tin);
+    public ResponseEntity<?> capNhatThongTin(@RequestParam String thong_tin) {
+        try{
+            chService.capNhatThongTin(thong_tin);
+            return ResponseEntity.ok("Cập nhật thành công");
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
     @PostMapping("/chinh_sach")
-     public void capNhatChinhSach(@RequestParam String chinh_sach) {
-        chService.capNhatChinhSach(chinh_sach);
+     public ResponseEntity<?> capNhatChinhSach(@RequestParam String chinh_sach) {
+        try{
+            chService.capNhatChinhSach(chinh_sach);
+            return  ResponseEntity.ok("Cập nhật thành công");
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 }

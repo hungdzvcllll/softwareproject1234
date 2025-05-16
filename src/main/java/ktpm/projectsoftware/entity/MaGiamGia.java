@@ -34,7 +34,6 @@ public class MaGiamGia {
     @ManyToOne
     @JoinColumn(name = "danh_mucid",nullable=false)
     private DanhMuc danhmuc;
-    @JsonIgnore
     @OneToMany(mappedBy="magiamgia")
     private Collection<SanPhamThuocDonHang> sanphamthuocdonhang;
 }

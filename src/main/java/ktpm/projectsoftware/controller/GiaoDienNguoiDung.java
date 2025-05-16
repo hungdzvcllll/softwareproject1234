@@ -6,11 +6,17 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +25,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.twilio.rest.api.v2010.Account;
+
 import ktpm.projectsoftware.Exception.MaSaiHoacHetHan;
 import ktpm.projectsoftware.Exception.NguoiDungDaDangKy;
 import ktpm.projectsoftware.Exception.SanPhamKhongDu;
 import ktpm.projectsoftware.Exception.SoLuongAm;
+import ktpm.projectsoftware.Security.JwtService;
+import ktpm.projectsoftware.Security.MyUserDetails;
 import ktpm.projectsoftware.entity.DonHang;
 import ktpm.projectsoftware.entity.NguoiDung;
 import ktpm.projectsoftware.entity.SanPham;
@@ -46,49 +56,98 @@ public class GiaoDienNguoiDung {
     DichVuDatHang dvdh;
     @Autowired
     DichVuDonHang dvdonhang;
+    @Autowired
+    JwtService jwtService;
     @PostMapping("/dang_ky")
-    public NguoiDung dangKy(@RequestBody NguoiDung nd) throws Exception {
-        return dv.KhachHangChuaDangKy(nd);
+    public ResponseEntity<?> dangKy(@RequestBody NguoiDung nd) throws Exception {
+        try{
+            return ResponseEntity.ok(dv.KhachHangChuaDangKy(nd));
+        }
+         catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @PostMapping("/xac_nhan_dang_ky")
-    public NguoiDung xacNhan(@RequestBody NguoiDung nd) throws Exception {
-        return dv.NguoiDungDangKyThanhCong(nd.getTen(), nd.getMaXacNhan());
+    public ResponseEntity<?> xacNhan(@RequestBody NguoiDung nd) throws Exception {
+        try{
+            return ResponseEntity.ok(dv.NguoiDungDangKyThanhCong(nd.getTen(), nd.getMaXacNhan()));
+        }
+         catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @GetMapping("/them_vao_gio_hang")
-    public NguoiDung themVaoGioHang(@RequestParam int san_phamid) {
-        return dv.themSanPhamVaoGioHang(san_phamid);
+    public ResponseEntity<?> themVaoGioHang(@RequestParam int san_phamid) {
+        try{
+            return ResponseEntity.ok(dv.themSanPhamVaoGioHang(san_phamid));
+        }
+         catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @GetMapping("/xoa_khoi_gio_hang")
-    public void xoa_khoi_gio_hang(@RequestParam int san_phamid) {
-        dv.xoaSanPhamKhoiGioHang(san_phamid);
+    public ResponseEntity<?> xoa_khoi_gio_hang(@RequestParam int san_phamid) {
+        try{
+            dv.xoaSanPhamKhoiGioHang(san_phamid);
+            return ResponseEntity.ok("xóa thành công");
+        }
+         catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
-    @GetMapping("/abc")
-    public String abc() {
-        return "abc";
-    }
     @GetMapping("/GioHang")
-    public ArrayList<SanPham> timKiemGioHang(){
-        return dv.timKiemGioHang();
+    public ResponseEntity<?> timKiemGioHang(){
+        try{
+            return ResponseEntity.ok(dv.timKiemGioHang());
+        }
+         catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
-    @ExceptionHandler(NguoiDungDaDangKy.class)
-    public String daDangKy() {
-        return "Nguoi Dung Da Dang Ky";
-    }
+    @PostMapping("/signin")
+    public ResponseEntity<?> login(@RequestBody NguoiDung nd) {
+        try {
+            // Xác thực thông tin đăng nhập
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            nd.getTen(),
+                            nd.getMatKhau()));
 
-    @ExceptionHandler(MaSaiHoacHetHan.class)
-    public String maSai() {
-        return "Ma sai hoac het han";
-    }
-    @ExceptionHandler(SoLuongAm.class)
-    public String soluongam(Exception e){
-        return e.getMessage();
-    }
-     @ExceptionHandler(SanPhamKhongDu.class)
-    public String spkodu(Exception e){
-        return e.getMessage();
+            // Nếu xác thực thành công, tạo token và trả về
+
+
+            // Nếu xác thực thành công
+            if (authentication.isAuthenticated()) {
+                // Lấy thông tin Account từ đối tượng xác thực
+                MyUserDetails account = (MyUserDetails) authentication.getPrincipal();
+
+                // Tạo JWT token
+                String token = jwtService.generateToken(account.getUsername());
+
+                // Trả về token và role
+                return ResponseEntity.ok(
+                        token
+                        );
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Invalid username or password");
+            }
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Username not found");
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Incorrect password");
+        } catch (LockedException | DisabledException | AccountExpiredException | CredentialsExpiredException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("An error occurred: " + e.getMessage());
+        }
     }
 }

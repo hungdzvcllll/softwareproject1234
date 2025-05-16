@@ -1,5 +1,7 @@
 package ktpm.projectsoftware.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -20,6 +22,7 @@ public class SanPhamThuocDonHang {
     private int SoLuong;
     private long giaGoc;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "ma_giam_gia_id", nullable = true)
     private MaGiamGia magiamgia;
 }

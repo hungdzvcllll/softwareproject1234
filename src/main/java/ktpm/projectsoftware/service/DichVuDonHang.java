@@ -41,6 +41,7 @@ public class DichVuDonHang {
             dh.setDaThanhToan(false);
             dhRepo.save(dh);
         }
+
     }
 
     public Long tongDoanhThu() {

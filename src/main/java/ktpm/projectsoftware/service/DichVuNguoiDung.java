@@ -5,16 +5,33 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.twilio.rest.api.v2010.Account;
+
 import java.util.regex.Pattern;
 
 import ktpm.projectsoftware.Exception.MaSaiHoacHetHan;
 import ktpm.projectsoftware.Exception.NguoiDungDaDangKy;
+import ktpm.projectsoftware.Security.JwtService;
 import ktpm.projectsoftware.Security.MyUserDetails;
 import ktpm.projectsoftware.entity.NguoiDung;
 import ktpm.projectsoftware.entity.SanPham;
@@ -31,7 +48,10 @@ public class DichVuNguoiDung {
     EmailSender sender;
     @Autowired
     SanPhamRepository sprepo;
-
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtService jwtService;
     public NguoiDung timNguoiDungHienTai() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails u = (UserDetails) principal;
@@ -87,7 +107,7 @@ public class DichVuNguoiDung {
         }
         throw new MaSaiHoacHetHan("Tai khoan da dang ky,ma sai hoac het han");
     }
-
+    
     public NguoiDung themSanPhamVaoGioHang(int sanphamid) {
         NguoiDung nd = timNguoiDungHienTai();
         SanPham sp = sprepo.findById(sanphamid);

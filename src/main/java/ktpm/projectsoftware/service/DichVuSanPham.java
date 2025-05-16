@@ -1,6 +1,7 @@
 package ktpm.projectsoftware.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,20 @@ public class DichVuSanPham {
                 l2.add(sp);
         }
         return l2;
+    }
+    public ArrayList<SanPham> findAll(){
+        return spRepo.findAll();
+    }
+    public ArrayList<SanPham> sortByPriceAsc(){
+        ArrayList<SanPham>l1=spRepo.findAll();
+        l1.sort(Comparator.comparingDouble(SanPham::getGia));
+        return l1;
+    }
+    public ArrayList<SanPham> sortByPriceDesc(){
+        ArrayList<SanPham>l1=spRepo.findAll();
+        l1.sort(Comparator.comparingDouble(SanPham::getGia));
+        l1.reversed();
+        return l1;
     }
     public SanPham chiTietSanPham(int id){    
         return spRepo.findById(id);
