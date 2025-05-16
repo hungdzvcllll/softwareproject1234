@@ -49,10 +49,10 @@ public class SoftwareSecurity {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/",
-                                 "/dang_ky", "/xac_nhan_dang_ky","/signin","/thanhtoan")
+                                 "/dang_ky", "/xac_nhan_dang_ky","/signin","/reset_password","/confirm_reset_password")
                         .permitAll()
                         .requestMatchers("huyMa","themMa","xacNhanNhanHang","themSanPham","xoaSanPham","thong_tin", "chinh_sach"
-                        ,"/TongDoanhThu","/doanhThuSanPham").hasRole("Chu")
+                        ,"/TongDoanhThu","/doanhThuSanPham").hasAuthority("Chu")
                         //.requestMatchers("abc").hasAnyAuthority("KhachHang")
                         .anyRequest().authenticated())
 

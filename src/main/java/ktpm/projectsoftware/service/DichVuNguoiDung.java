@@ -83,8 +83,7 @@ public class DichVuNguoiDung {
             nd.setMatKhau(encoder.encode(nd.getMatKhau()));
             nd.setVaiTro("KhachHang");
             nd.setThoiHan(LocalDateTime.now().plusHours(1));
-            if (isValidEmail(nd.getTen()))
-                sender.sendEmail(ma, nd.getTen());
+            sender.sendEmail(ma, nd.getTen());
             return repo.save(nd);
 
         } else if (ndht.isDaDangKy() == false) {
@@ -107,7 +106,26 @@ public class DichVuNguoiDung {
         }
         throw new MaSaiHoacHetHan("Tai khoan da dang ky,ma sai hoac het han");
     }
-    
+    public void DatLaiMatKhau(String email){
+        NguoiDung ndht = repo.findByten(email);
+        if(ndht==null||ndht.isDaDangKy()==false)
+            throw new RuntimeException("Tài khoản chưa tồn tại");
+        String ma=taoMa();
+        ndht.setMaXacNhan(ma);
+        ndht.setThoiHan(LocalDateTime.now().plusHours(1));
+        repo.save(ndht);
+        sender.sendEmail(ma, ndht.getTen());
+    }
+    public void DatLaiMatKhauThanhCong(String email,String mxn,String new_pass){
+        NguoiDung nd = repo.findByTenAndMaXacNhan(email, mxn);
+        if (nd != null && nd.isDaDangKy() == true && LocalDateTime.now().isBefore(nd.getThoiHan())){
+           nd.setMatKhau(encoder.encode(new_pass));
+           repo.save(nd);
+        }
+        else
+           throw new RuntimeException("Reset mật khẩu thất bại,vui lòng thử lại");
+    }
+
     public NguoiDung themSanPhamVaoGioHang(int sanphamid) {
         NguoiDung nd = timNguoiDungHienTai();
         SanPham sp = sprepo.findById(sanphamid);

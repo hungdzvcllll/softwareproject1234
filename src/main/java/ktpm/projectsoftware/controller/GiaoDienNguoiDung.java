@@ -78,7 +78,7 @@ public class GiaoDienNguoiDung {
         }
     }
 
-    @GetMapping("/them_vao_gio_hang")
+    @PostMapping("/them_vao_gio_hang")
     public ResponseEntity<?> themVaoGioHang(@RequestParam int san_phamid) {
         try{
             return ResponseEntity.ok(dv.themSanPhamVaoGioHang(san_phamid));
@@ -88,7 +88,7 @@ public class GiaoDienNguoiDung {
         }
     }
 
-    @GetMapping("/xoa_khoi_gio_hang")
+    @PostMapping("/xoa_khoi_gio_hang")
     public ResponseEntity<?> xoa_khoi_gio_hang(@RequestParam int san_phamid) {
         try{
             dv.xoaSanPhamKhoiGioHang(san_phamid);
@@ -107,6 +107,27 @@ public class GiaoDienNguoiDung {
          catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+    @PostMapping("/reset_password")
+    public ResponseEntity<?> resst_password(@RequestParam String email){
+        try{
+            dv.DatLaiMatKhau(email);
+            return ResponseEntity.ok("Đã gửi mã xác nhận");
+        }
+         catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+    @PostMapping("/confirm_reset_password")
+    public ResponseEntity<?> confirm(String email,String mxn,String new_pass){
+        try{
+            dv.DatLaiMatKhauThanhCong(email, mxn, new_pass);
+            return ResponseEntity.ok("Đặt lại mật khẩu thành công");
+        }
+         catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
     }
     @PostMapping("/signin")
     public ResponseEntity<?> login(@RequestBody NguoiDung nd) {

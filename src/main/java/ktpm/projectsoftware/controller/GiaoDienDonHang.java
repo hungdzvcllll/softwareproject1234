@@ -22,7 +22,7 @@ public class GiaoDienDonHang {
     @Autowired
     DichVuDonHang dvdh;
 
-     @GetMapping("/huydonhang")
+     @PostMapping("/huydonhang")
      public ResponseEntity<?> huyDonHang(@RequestParam int don_hangid) {
         try{
             dvdh.huyDonHang(don_hangid);
@@ -43,7 +43,7 @@ public class GiaoDienDonHang {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-    @GetMapping("/huyThanhToan")
+    @PostMapping("/huyThanhToan")
      public ResponseEntity<?> huyThanhToan(@RequestParam int don_hangid) {
         try{
             dvdh.huyThanhToan(don_hangid);
@@ -53,7 +53,7 @@ public class GiaoDienDonHang {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-     @GetMapping("/tuChoiDonHang")
+     @PostMapping("/tuChoiDonHang")
      public ResponseEntity<?> tuChoiDonHang(@RequestParam int id) {
         try{
             dvdh.tuChoiDonHang(id);
