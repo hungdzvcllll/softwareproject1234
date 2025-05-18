@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
-public class GiaoDienDanhGia {
+public class DanhGiaController {
     @Autowired
     FilesStorageServiceImpl fileservice;
     @Autowired
     DichVuDanhGia dvdg;
 
-    @PostMapping("/danh_gia")
+    @PostMapping("/danh_gia") //luu đánh giá sản phẩm
     public ResponseEntity<?> luuDanhGia(@RequestParam String binh_luan, @RequestParam MultipartFile hinh_anh,
             @RequestParam int sao, @RequestParam int san_phamid) {
         try{
@@ -33,6 +33,16 @@ public class GiaoDienDanhGia {
             return ResponseEntity.ok(dvdg.luuDanhGia(binh_luan, null,  sao, san_phamid));
         }
         catch(Exception e){
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+    @GetMapping("/danh_sach_danh_gia") //danh sách các comment của 1 sản phẩm,ở 
+//  phía frontendchỉ cần lấy id sản phẩm,số sao,comment và ảnh bình luận nếu có
+    public ResponseEntity<?> danhSach(int sanpham_id){
+        try{
+            return ResponseEntity.ok(dvdg.danhGiaSanPham(sanpham_id));
+        }
+         catch(Exception e){
            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

@@ -22,7 +22,7 @@ import ktpm.projectsoftware.service.DichVuSanPham;
 import ktpm.projectsoftware.service.FilesStorageServiceImpl;
 
 @RestController
-public class GiaoDienSanPham {
+public class SanPhamController {
     @Autowired
     DichVuSanPham dvsp;
     @Autowired
@@ -31,7 +31,7 @@ public class GiaoDienSanPham {
     DichVuDatHang dathang;
     @Autowired
     DanhMucRepository dmRepo;
-    @GetMapping("/chi_tiet_san_pham")
+    @GetMapping("/chi_tiet_san_pham")//đọc thông tin 1 sản phẩm
     public ResponseEntity<?> chiTietSanPham(@RequestParam int id){
         try{
             return ResponseEntity.ok( dvsp.chiTietSanPham(id));
@@ -40,7 +40,7 @@ public class GiaoDienSanPham {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-    @GetMapping("/Allsp")
+    @GetMapping("/Allsp")//toàn bộ danh sách sản phẩm
     public ResponseEntity<?> getAll(){
         try{
             return  ResponseEntity.ok(dvsp.findAll());
@@ -49,7 +49,17 @@ public class GiaoDienSanPham {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-    @GetMapping("/GiaTangDan")
+    @GetMapping("/findByDanhMuc")//tìm sản phẩm theo danh mục
+    public ResponseEntity<?> findByDanhMuc(@RequestParam int danhmuc_id){
+        try{
+        
+            return  ResponseEntity.ok(dvsp.findByDanhMuc(danhmuc_id));
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+    @GetMapping("/GiaTangDan")//sắp xếp danh sách theo giá tăng dần
     public ResponseEntity<?> getSpGiaTangDan(){
         try{
             return  ResponseEntity.ok(dvsp.sortByPriceAsc());
@@ -58,7 +68,7 @@ public class GiaoDienSanPham {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-     @GetMapping("/GiaGiamDan")
+     @GetMapping("/GiaGiamDan")//sắp xếp theo giá giảm
     public ResponseEntity<?> getSpGiaGiamDan(){
         try{
             return  ResponseEntity.ok(dvsp.sortByPriceDesc());
@@ -67,7 +77,7 @@ public class GiaoDienSanPham {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-    @PostMapping("/themSanPham")
+    @PostMapping("/themSanPham")//cần có tenSanPham,moTa,gia,soLuongHienTai
     public ResponseEntity<?> themSanPham(@ModelAttribute SanPham sp,@RequestParam String category_name,@RequestParam MultipartFile image){
         try{
             String name=fileService.generateRandomString(image.getOriginalFilename());
@@ -93,7 +103,7 @@ public class GiaoDienSanPham {
         }
         
     }
-    @PostMapping("/doanhThuSanPham")
+    @GetMapping("/doanhThuSanPham")
     public ResponseEntity<?> doanhThuSanPham(@RequestParam int sanpham_id){
         return ResponseEntity.ok(dathang.doanhThuSanPham(sanpham_id));
     }

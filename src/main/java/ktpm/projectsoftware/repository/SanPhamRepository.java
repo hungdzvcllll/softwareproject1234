@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import jakarta.transaction.Transactional;
+import ktpm.projectsoftware.entity.DanhMuc;
 import ktpm.projectsoftware.entity.SanPham;
 
 import java.util.List;
@@ -21,5 +22,7 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Integer> {
     @Transactional
     @Query(nativeQuery=true,value="set con_bay_ban=0 where id=?1")
     public void ngungBayBan(int id);
+    
+    public ArrayList<SanPham> findByDanhmuc(DanhMuc dm);
     
 }

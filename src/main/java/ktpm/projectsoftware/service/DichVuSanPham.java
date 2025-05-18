@@ -1,6 +1,8 @@
 package ktpm.projectsoftware.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,10 @@ public class DichVuSanPham {
         }
         return true;
     }
-
+    public ArrayList<SanPham> findByDanhMuc(int id){
+        DanhMuc dm=dmRepo.findById(id).get();
+        return spRepo.findByDanhmuc(dm);
+    }
     public ArrayList<SanPham> timKiemSanPham(String tuKhoa, String danhMuc, String sao, String gia) {
         ArrayList<SanPham>l1=spRepo.findAll();
 
@@ -65,13 +70,14 @@ public class DichVuSanPham {
     public ArrayList<SanPham> sortByPriceDesc(){
         ArrayList<SanPham>l1=spRepo.findAll();
         l1.sort(Comparator.comparingDouble(SanPham::getGia));
-        l1.reversed();
+        Collections.reverse(l1);
         return l1;
     }
     public SanPham chiTietSanPham(int id){    
         return spRepo.findById(id);
     }
     public void themSanPham(SanPham sp){
+        sp.setConBayBan(true);
         spRepo.save(sp);
     }
     public void ngungBayBan(int id){

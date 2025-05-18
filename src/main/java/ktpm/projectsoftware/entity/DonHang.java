@@ -27,9 +27,12 @@ public class DonHang {
     private boolean NhanHang;
     private boolean daThanhToan;
     private long GiaTriDonHang;
+    
     @ManyToOne
     @JoinColumn(name="NguoiDungID",nullable=false)
     @JsonIgnore
     NguoiDung nguoidung;
+    public String soDienThoai;
+    public String diaChi;
    
 }

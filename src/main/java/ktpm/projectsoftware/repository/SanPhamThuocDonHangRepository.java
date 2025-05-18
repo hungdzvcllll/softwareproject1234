@@ -16,4 +16,7 @@ public interface SanPhamThuocDonHangRepository extends JpaRepository<SanPhamThuo
 
    @Query(nativeQuery = true, value = "select sum(gia_tri_don_hang) from don_hang where nhan_hang=1")
    public Long TongDoanhThu();
+   public ArrayList<SanPhamThuocDonHang> findAll();
+   @Query(nativeQuery = true,value="select * from san_pham_thuoc_don_hang where don_hangid=?1")
+   public ArrayList<SanPhamThuocDonHang> findByDonHangId(int id);
 }

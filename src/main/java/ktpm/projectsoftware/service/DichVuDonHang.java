@@ -23,7 +23,9 @@ public class DichVuDonHang {
         NguoiDung nd = dvnd.timNguoiDungHienTai();
         return dhRepo.timKiemBangNguoiDung(nd.getID());
     }
-
+    public ArrayList<DonHang> findAll(){
+        return dhRepo.findAll();
+    }
     public void huyDonHang(int nguoi_dungid) {
         dhRepo.huyDonHang(nguoi_dungid);
     }

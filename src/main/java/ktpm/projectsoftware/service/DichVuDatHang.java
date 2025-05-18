@@ -31,16 +31,16 @@ public class DichVuDatHang {
     @Autowired
     MaGiamGiaRepository mggRepo;
 
-    public void datHang(ArrayList<SanPham> dssp, ArrayList<Integer> slsp, String so_dien_thoai, String dia_chi)
+    public void datHang(ArrayList<Integer> dssp, ArrayList<Integer> slsp, String so_dien_thoai, String dia_chi)
             throws Exception {
         long tong_so_tien = 0;
         NguoiDung nd = dv.timNguoiDungHienTai();
         ArrayList<Integer> not_enough=new ArrayList<Integer>();
         ArrayList<SanPhamThuocDonHang> l = new ArrayList<SanPhamThuocDonHang>();
         for (int i = 0; i < dssp.size(); i++) {
-            SanPham sp = spRepo.findById(dssp.get(i).getID());
+            SanPham sp = spRepo.findById(dssp.get(i)).get();
             if (slsp.get(i) > sp.getSoLuongHienTai())
-               not_enough.add(dssp.get(i).getID());
+               not_enough.add(dssp.get(i));
             if (slsp.get(i) < 0)
                 throw new SoLuongAm("Sản phẩm " + sp.getTenSanPham() + " không được có số lượng âm");
             sp.setSoLuongHienTai(sp.getSoLuongHienTai() - slsp.get(i));
@@ -54,9 +54,10 @@ public class DichVuDatHang {
                 mggRepo.save(mgg);
             }
         }
-        if(not_enough!=null)
+        if(not_enough.size()!=0)
             throw new SanPhamKhongDu("Cac san pham voi id "+not_enough.toString()+" Khong con du so luong");
-        DonHang dh = dhRepo.save(new DonHang(0, true, false, false, tong_so_tien, nd));
+        System.out.println(tong_so_tien);
+        DonHang dh = dhRepo.save(new DonHang(0, true, false, false, tong_so_tien, nd,so_dien_thoai,dia_chi));
         for (SanPhamThuocDonHang spdh : l) {
             CompositeKey1 ck1 = spdh.getKey();
             ck1.setDonHangID(dh.getID());
@@ -68,11 +69,14 @@ public class DichVuDatHang {
         ArrayList<SanPhamThuocDonHang> l = spdhRepo.danhSachBanHang();
         long doanhThu = 0;
         for (SanPhamThuocDonHang spdh : l) {
-            if (spdh.getMagiamgia() == null)
-                doanhThu += spdh.getGiaGoc() * spdh.getSoLuong();
-            else
-                doanhThu += spdh.getGiaGoc() * spdh.getSoLuong() * (1 - (float)spdh.getMagiamgia().getPhanTramGiamGia()/100);
+            if(spdh.getKey().getSanPhamID()==san_phamid){
+                if (spdh.getMagiamgia() == null)
+                    doanhThu += spdh.getGiaGoc() * spdh.getSoLuong();
+                else
+                    doanhThu += spdh.getGiaGoc() * spdh.getSoLuong() * (1 - (float)spdh.getMagiamgia().getPhanTramGiamGia()/100);
+            }
         }
+
         return doanhThu;
     }
 

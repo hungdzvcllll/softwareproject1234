@@ -1,5 +1,7 @@
 package ktpm.projectsoftware.repository;
 
+import java.util.ArrayList;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +17,5 @@ public interface MaGiamGiaRepository extends JpaRepository<MaGiamGia,Integer> {
     @Transactional
     @Query(nativeQuery = true,value="update ma_giam_gia set ngay_het_han=CURDATE() WHERE id=?1")
     public void huyMa(int id);
+    public ArrayList<MaGiamGia> findAll();
 }

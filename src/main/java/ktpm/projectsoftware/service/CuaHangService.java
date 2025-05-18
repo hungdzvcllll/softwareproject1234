@@ -19,5 +19,11 @@ public class CuaHangService {
     public void capNhatChinhSach(String thong_tin) {
         ttchRepo.capNhatChinhSach(thong_tin);
     }
+    public String getThongTin(){
+        return ttchRepo.findById(1).get().getThongTin();
+    }
+    public String getChinhSach(){
+          return ttchRepo.findById(1).get().getChinhSach();
+    }
 
 }

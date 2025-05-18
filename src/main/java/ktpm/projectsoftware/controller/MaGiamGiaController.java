@@ -3,6 +3,7 @@ package ktpm.projectsoftware.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +16,7 @@ import ktpm.projectsoftware.service.MaGiamGiaService;
 public class MaGiamGiaController {
     @Autowired
     MaGiamGiaService mggService;
-    @PostMapping("/themMa")
+    @PostMapping("/themMa") //them mã giảm giá,bao gồm ma,ngayHetHan,soLuotConLai,phanTramGiamGia
     public ResponseEntity<?> themMa(@RequestBody MaGiamGia mgg,@RequestParam String tendm){
         try{
             mggService.themMa(mgg,tendm);
@@ -25,7 +26,7 @@ public class MaGiamGiaController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-    @PostMapping("/huyMa")
+    @PostMapping("/huyMa") //hủy mã giảm giá
     public ResponseEntity<?> huyMa(@RequestParam int id){
         try{
             mggService.huyMa(id);
@@ -35,4 +36,14 @@ public class MaGiamGiaController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+    @GetMapping("/danhSachMa") //danh sách mã giảm giá
+    public ResponseEntity<?> danhSach(){
+        try{
+            return ResponseEntity.ok(mggService.findAll());
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+    
 }

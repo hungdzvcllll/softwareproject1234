@@ -10,5 +10,5 @@ import ktpm.projectsoftware.entity.DanhMuc;
 @Repository
 public interface DanhMucRepository extends JpaRepository<DanhMuc, Integer> {
     DanhMuc findBytenDanhMuc(String ten);
-
+    ArrayList<DanhMuc> findAll();
 }

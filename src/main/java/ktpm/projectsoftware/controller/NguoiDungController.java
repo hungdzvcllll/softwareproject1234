@@ -43,7 +43,7 @@ import ktpm.projectsoftware.service.DichVuDonHang;
 import ktpm.projectsoftware.service.DichVuNguoiDung;
 
 @RestController
-public class GiaoDienNguoiDung {
+public class NguoiDungController {
     @Autowired
     DichVuNguoiDung dv;
     @Autowired
@@ -58,7 +58,7 @@ public class GiaoDienNguoiDung {
     DichVuDonHang dvdonhang;
     @Autowired
     JwtService jwtService;
-    @PostMapping("/dang_ky")
+    @PostMapping("/dang_ky") //cần 2 thông tin là ten và matKhau(ten thật ra là email,nhưng hiện giờ hơi khó sửa)
     public ResponseEntity<?> dangKy(@RequestBody NguoiDung nd) throws Exception {
         try{
             return ResponseEntity.ok(dv.KhachHangChuaDangKy(nd));
@@ -67,48 +67,7 @@ public class GiaoDienNguoiDung {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
-    @PostMapping("/xac_nhan_dang_ky")
-    public ResponseEntity<?> xacNhan(@RequestBody NguoiDung nd) throws Exception {
-        try{
-            return ResponseEntity.ok(dv.NguoiDungDangKyThanhCong(nd.getTen(), nd.getMaXacNhan()));
-        }
-         catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
-    @PostMapping("/them_vao_gio_hang")
-    public ResponseEntity<?> themVaoGioHang(@RequestParam int san_phamid) {
-        try{
-            return ResponseEntity.ok(dv.themSanPhamVaoGioHang(san_phamid));
-        }
-         catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
-    @PostMapping("/xoa_khoi_gio_hang")
-    public ResponseEntity<?> xoa_khoi_gio_hang(@RequestParam int san_phamid) {
-        try{
-            dv.xoaSanPhamKhoiGioHang(san_phamid);
-            return ResponseEntity.ok("xóa thành công");
-        }
-         catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/GioHang")
-    public ResponseEntity<?> timKiemGioHang(){
-        try{
-            return ResponseEntity.ok(dv.timKiemGioHang());
-        }
-         catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-    @PostMapping("/reset_password")
+     @PostMapping("/reset_password")
     public ResponseEntity<?> resst_password(@RequestParam String email){
         try{
             dv.DatLaiMatKhau(email);
@@ -118,7 +77,7 @@ public class GiaoDienNguoiDung {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-    @PostMapping("/confirm_reset_password")
+    @PostMapping("/confirm_reset_password") //mxn là mã xác nhận được gửi tới email
     public ResponseEntity<?> confirm(String email,String mxn,String new_pass){
         try{
             dv.DatLaiMatKhauThanhCong(email, mxn, new_pass);
@@ -129,7 +88,17 @@ public class GiaoDienNguoiDung {
         }
 
     }
-    @PostMapping("/signin")
+    @PostMapping("/xac_nhan_dang_ky") //cần 2 thông tin là ten và maXacNhan
+    public ResponseEntity<?> xacNhan(@RequestBody NguoiDung nd) throws Exception {
+        try{
+            return ResponseEntity.ok(dv.NguoiDungDangKyThanhCong(nd.getTen(), nd.getMaXacNhan()));
+        }
+         catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/signin")//ten và matKhau
     public ResponseEntity<?> login(@RequestBody NguoiDung nd) {
         try {
             // Xác thực thông tin đăng nhập

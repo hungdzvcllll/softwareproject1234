@@ -1,5 +1,7 @@
 package ktpm.projectsoftware.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ktpm.projectsoftware.entity.DanhMuc;
@@ -20,5 +22,11 @@ public class MaGiamGiaService {
     }
     public void huyMa(int id){
         mggRepo.huyMa(id);
+    }
+    public ArrayList<MaGiamGia> findAll(){
+        return mggRepo.findAll();
+    }
+    public MaGiamGia findById(int id){
+        return mggRepo.findById(id).get();
     }
 }

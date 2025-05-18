@@ -34,4 +34,5 @@ public interface DonHangRepository extends JpaRepository<DonHang, Integer> {
     @Transactional
     @Query(nativeQuery = true,value="update don_hang set nhan_hang=1 where id=?1" )
     public void xacNhanNhanHang(int id);
+    public ArrayList<DonHang> findAll();
 }
