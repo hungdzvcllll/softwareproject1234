@@ -40,6 +40,7 @@ public class NguoiDung {
     private boolean daDangKy;
     private String maXacNhan;
     private LocalDateTime ThoiHan;
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "GioHang", joinColumns = @JoinColumn(name = "NguoiDungID"), inverseJoinColumns = @JoinColumn(name = "SanPhamID"))
     private Collection<SanPham> sanpham;

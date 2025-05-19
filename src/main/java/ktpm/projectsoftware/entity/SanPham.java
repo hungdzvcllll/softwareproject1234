@@ -42,4 +42,7 @@ public class SanPham {
     @JsonIgnore
     @OneToMany(mappedBy = "sanpham")
     Collection<DanhGia> danhgia;
+    public int getDanhMucID(){
+        return getDanhmuc().getID();
+    }
 }

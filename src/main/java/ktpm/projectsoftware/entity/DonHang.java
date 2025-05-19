@@ -34,5 +34,8 @@ public class DonHang {
     NguoiDung nguoidung;
     public String soDienThoai;
     public String diaChi;
+    public int getNguoiDungID(){
+        return getNguoidung().getID();
+    }
    
 }

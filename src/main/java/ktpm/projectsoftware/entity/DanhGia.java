@@ -29,11 +29,17 @@ public class DanhGia {
     private int Sao;
     @ManyToOne
     @JoinColumn(name="NguoiDungID",nullable=false)
-    @JsonIgnore 
+    @JsonIgnore
     private NguoiDung nguoidung;
     @ManyToOne
     @JoinColumn(name="SanPhamID",nullable=false)
     @JsonIgnore
     private SanPham sanpham;
+    public int getNguoiDungId(){
+        return getNguoidung().getID();
+    }
+    public int getSanPhamID(){
+        return getSanpham().getID();
+    }
 }
 

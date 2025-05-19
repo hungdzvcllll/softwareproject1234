@@ -29,6 +29,7 @@ import ktpm.projectsoftware.service.DichVuNguoiDung;
 
 @RestController
 public class GioHangController {
+    @Autowired
      DichVuNguoiDung dv;
     @Autowired
     SanPhamRepository spRepo;
