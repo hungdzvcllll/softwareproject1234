@@ -46,6 +46,17 @@ public class DichVuSanPham {
         DanhMuc dm=dmRepo.findById(id).get();
         return spRepo.findByDanhmuc(dm);
     }
+    public ArrayList<SanPham> findByDanhMucGiaGiamDan(int danhMuc_id){
+        ArrayList<SanPham> sp=spRepo.findByDanhmuc(dmRepo.findById(danhMuc_id).get());
+        sp.sort(Comparator.comparingDouble(SanPham::getGia));
+        Collections.reverse(sp);
+        return sp;
+    }
+    public ArrayList<SanPham> findByDanhMucGiaTangDan(int danhMuc_id){
+        ArrayList<SanPham> sp=spRepo.findByDanhmuc(dmRepo.findById(danhMuc_id).get());
+        sp.sort(Comparator.comparingDouble(SanPham::getGia));
+        return sp;
+    }
     public ArrayList<SanPham> timKiemSanPham(String tuKhoa, String danhMuc, String sao, String gia) {
         ArrayList<SanPham>l1=spRepo.findAll();
 

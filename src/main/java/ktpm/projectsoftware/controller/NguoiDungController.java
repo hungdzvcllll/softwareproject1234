@@ -2,6 +2,8 @@ package ktpm.projectsoftware.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -88,6 +90,15 @@ public class NguoiDungController {
         }
 
     }
+    @GetMapping("/NguoiDungHienTai")
+    public ResponseEntity<?> nguoiDungHienTai(){
+        try{
+            return ResponseEntity.ok(dv.timNguoiDungHienTai());
+        }
+         catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
     @PostMapping("/xac_nhan_dang_ky") //cần 2 thông tin là ten và maXacNhan
     public ResponseEntity<?> xacNhan(@RequestBody NguoiDung nd) throws Exception {
         try{
@@ -113,14 +124,17 @@ public class NguoiDungController {
             // Nếu xác thực thành công
             if (authentication.isAuthenticated()) {
                 // Lấy thông tin Account từ đối tượng xác thực
+                SecurityContextHolder.getContext().setAuthentication(authentication);
                 MyUserDetails account = (MyUserDetails) authentication.getPrincipal();
 
                 // Tạo JWT token
                 String token = jwtService.generateToken(account.getUsername());
-
+                Map<String, Object> response = new HashMap<>();
+                response.put("user",dv.timNguoiDungHienTai());
+                response.put("token", token);
                 // Trả về token và role
                 return ResponseEntity.ok(
-                        token
+                        response
                         );
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)

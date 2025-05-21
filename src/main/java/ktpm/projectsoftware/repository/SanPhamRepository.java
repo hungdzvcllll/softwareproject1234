@@ -20,7 +20,7 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Integer> {
     SanPham findById(int id);
     @Modifying
     @Transactional
-    @Query(nativeQuery=true,value="set con_bay_ban=0 where id=?1")
+    @Query(nativeQuery=true,value="update san_pham set con_bay_ban=0 where id=?1")
     public void ngungBayBan(int id);
     
     public ArrayList<SanPham> findByDanhmuc(DanhMuc dm);

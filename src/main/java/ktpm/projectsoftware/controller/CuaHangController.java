@@ -45,7 +45,7 @@ public class CuaHangController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-      @GetMapping("/getChinhSach")  //đọc chính sách
+    @GetMapping("/getChinhSach")  //đọc chính sách
     public ResponseEntity<?> getChinhSach(){
         try{
            return ResponseEntity.ok(chService.getChinhSach());

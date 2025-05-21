@@ -77,13 +77,32 @@ public class SanPhamController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+    @GetMapping("/DanhMucGiaGiamDan")
+    public ResponseEntity<?> danhMucGiaGiamDan(@RequestParam int danhmuc_id){
+        try{
+            return  ResponseEntity.ok(dvsp.findByDanhMucGiaGiamDan(danhmuc_id));
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+     @GetMapping("/DanhMucGiaTangDan")
+    public ResponseEntity<?> danhMucGiaTangDan(@RequestParam int danhmuc_id){
+        try{
+            return  ResponseEntity.ok(dvsp.findByDanhMucGiaTangDan(danhmuc_id));
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+    
     @PostMapping("/themSanPham")//cần có tenSanPham,moTa,gia,soLuongHienTai
-    public ResponseEntity<?> themSanPham(@ModelAttribute SanPham sp,@RequestParam String category_name,@RequestParam MultipartFile image){
+    public ResponseEntity<?> themSanPham(@ModelAttribute SanPham sp,@RequestParam int sp_id,@RequestParam MultipartFile image){
         try{
             String name=fileService.generateRandomString(image.getOriginalFilename());
             fileService.save(image,name);
             sp.setSourceHinhAnh(name);
-            DanhMuc dm=dmRepo.findBytenDanhMuc(category_name);
+            DanhMuc dm=dmRepo.findById(sp_id).get();
             sp.setDanhmuc(dm);
             dvsp.themSanPham(sp);
             return ResponseEntity.ok("Thêm sản phẩm thành công");

@@ -15,8 +15,8 @@ public class MaGiamGiaService {
     MaGiamGiaRepository mggRepo;
     @Autowired
     DanhMucRepository dmRepo;
-    public void themMa(MaGiamGia mgg,String tendm){
-        DanhMuc dm=dmRepo.findBytenDanhMuc(tendm);
+    public void themMa(MaGiamGia mgg,int id){
+        DanhMuc dm=dmRepo.findById(id).get();
         mgg.setDanhmuc(dm);
         mggRepo.save(mgg);
     }

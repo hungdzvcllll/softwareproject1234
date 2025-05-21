@@ -2,6 +2,7 @@ package ktpm.projectsoftware.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,7 +130,7 @@ public class DichVuNguoiDung {
     public NguoiDung themSanPhamVaoGioHang(int sanphamid) {
         NguoiDung nd = timNguoiDungHienTai();
         SanPham sp = sprepo.findById(sanphamid);
-        ArrayList<SanPham> l = new ArrayList<SanPham>();
+        Collection<SanPham> l = nd.getSanpham();
         l.add(sp);
         nd.setSanpham(l);
         return repo.save(nd);
