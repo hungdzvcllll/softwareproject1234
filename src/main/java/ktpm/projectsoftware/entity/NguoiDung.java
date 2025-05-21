@@ -44,6 +44,7 @@ public class NguoiDung {
     @ManyToMany
     @JoinTable(name = "GioHang", joinColumns = @JoinColumn(name = "NguoiDungID"), inverseJoinColumns = @JoinColumn(name = "SanPhamID"))
     private Collection<SanPham> sanpham;
+    private String sourceImage;
     @JsonIgnore
     @OneToMany(mappedBy = "nguoidung")
     Collection<DonHang> donhang;

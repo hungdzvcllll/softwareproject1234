@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.twilio.rest.api.v2010.Account;
 
@@ -43,6 +44,7 @@ import ktpm.projectsoftware.repository.SanPhamRepository;
 import ktpm.projectsoftware.service.DichVuDatHang;
 import ktpm.projectsoftware.service.DichVuDonHang;
 import ktpm.projectsoftware.service.DichVuNguoiDung;
+import ktpm.projectsoftware.service.FilesStorageServiceImpl;
 
 @RestController
 public class NguoiDungController {
@@ -60,6 +62,8 @@ public class NguoiDungController {
     DichVuDonHang dvdonhang;
     @Autowired
     JwtService jwtService;
+    @Autowired
+    FilesStorageServiceImpl fileService;
     @PostMapping("/dang_ky") //cần 2 thông tin là ten và matKhau(ten thật ra là email,nhưng hiện giờ hơi khó sửa)
     public ResponseEntity<?> dangKy(@RequestBody NguoiDung nd) throws Exception {
         try{
@@ -153,5 +157,20 @@ public class NguoiDungController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("An error occurred: " + e.getMessage());
         }
+    }
+    @PostMapping("/thayavt")
+    public ResponseEntity<?> thayAvt(@RequestParam MultipartFile image){
+        try{
+            String name=fileService.generateRandomString(image.getOriginalFilename());
+            fileService.save(image,name);
+            NguoiDung nd=dv.timNguoiDungHienTai();
+            nd.setSourceImage(name);
+            repo.save(nd);
+            return ResponseEntity.ok("Thay avatar thành công");
+        }
+          catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+        
     }
 }
