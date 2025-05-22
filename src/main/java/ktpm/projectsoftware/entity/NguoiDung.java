@@ -35,8 +35,12 @@ public class NguoiDung {
     private String ten;
     @Column(columnDefinition = "NVARCHAR(50)")
     private String VaiTro;
+    private String username;
+    private String soDienThoai;
+    private String gioiTinh;
     @Column(columnDefinition = "NVARCHAR(200)")
     private String MatKhau;
+    private String diaChi;
     private boolean daDangKy;
     private String maXacNhan;
     private LocalDateTime ThoiHan;
