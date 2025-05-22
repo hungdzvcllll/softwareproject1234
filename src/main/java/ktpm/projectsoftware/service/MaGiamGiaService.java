@@ -29,4 +29,10 @@ public class MaGiamGiaService {
     public MaGiamGia findById(int id){
         return mggRepo.findById(id).get();
     }
+    public ArrayList<MaGiamGia> findByDanhMuc(int danhmuc_id){
+        return mggRepo.findByDanhmuc(dmRepo.findById(danhmuc_id).get());
+    }
+    public MaGiamGia maDuocChon(int danhmuc_id){
+        return mggRepo.timKiemMaGiamGia(danhmuc_id);
+    }
 }

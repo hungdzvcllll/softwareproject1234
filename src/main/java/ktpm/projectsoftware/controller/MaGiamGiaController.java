@@ -1,5 +1,7 @@
 package ktpm.projectsoftware.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,5 +48,25 @@ public class MaGiamGiaController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-    
+    @GetMapping("/maTheoDanhMuc")
+    public ResponseEntity<?> maTheoDanhMuc(@RequestParam int danhmuc_id){
+        try{
+            ArrayList<MaGiamGia> l=mggService.findByDanhMuc(danhmuc_id);
+            return ResponseEntity.ok(l);
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+    @GetMapping("/maDuocChon")
+     public ResponseEntity<?> maDuocChon(@RequestParam int danhmuc_id){
+        try{
+            MaGiamGia l=mggService.maDuocChon(danhmuc_id);
+            return ResponseEntity.ok(l);
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
 }

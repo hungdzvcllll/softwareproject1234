@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import jakarta.transaction.Transactional;
+import ktpm.projectsoftware.entity.DanhMuc;
 import ktpm.projectsoftware.entity.MaGiamGia;
 @Repository
 public interface MaGiamGiaRepository extends JpaRepository<MaGiamGia,Integer> {
@@ -18,4 +19,5 @@ public interface MaGiamGiaRepository extends JpaRepository<MaGiamGia,Integer> {
     @Query(nativeQuery = true,value="update ma_giam_gia set ngay_het_han=CURDATE() WHERE id=?1")
     public void huyMa(int id);
     public ArrayList<MaGiamGia> findAll();
+    public ArrayList<MaGiamGia> findByDanhmuc(DanhMuc dm);
 }
