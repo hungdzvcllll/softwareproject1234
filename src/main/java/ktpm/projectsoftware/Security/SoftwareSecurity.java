@@ -50,10 +50,10 @@ public class SoftwareSecurity {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/",
                                  "/dang_ky", "/xac_nhan_dang_ky","/signin","/reset_password","/confirm_reset_password","/getThongTin",
-                        "getChinhSach","/fulldanhsachdonhang")
+                        "getChinhSach")
                         .permitAll()
                         .requestMatchers("huyMa","themMa","xacNhanNhanHang","themSanPham","xoaSanPham","thong_tin", "chinh_sach"
-                        ,"/TongDoanhThu","/doanhThuSanPham","/AllspThuocDonHang").hasAuthority("Chu")
+                        ,"/TongDoanhThu","/doanhThuSanPham","/AllspThuocDonHang","/fulldanhsachdonhang").hasAuthority("Chu")
                         //.requestMatchers("abc").hasAnyAuthority("KhachHang")
                         .anyRequest().authenticated())
 

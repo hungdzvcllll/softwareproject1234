@@ -20,6 +20,8 @@ public interface DonHangRepository extends JpaRepository<DonHang, Integer> {
     @Query(nativeQuery=true,value="update don_hang set trang_thai_don_hang=0 where id=?1 ")
     public void huyDonHang(int id);
     public DonHang findById(int id);
+    @Query(nativeQuery = true,value="select * from don_hang where nguoi_dungid=?1 and id=?2")
+    public DonHang checkQuyenTruyCap(int nguoi_dungid,int san_phamid);
     @Modifying
     @Transactional
     @Query(nativeQuery = true,value="update don_hang set da_thanh_toan=1 where id=?1" )
