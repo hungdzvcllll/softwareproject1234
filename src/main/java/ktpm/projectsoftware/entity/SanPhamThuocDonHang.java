@@ -25,7 +25,9 @@ public class SanPhamThuocDonHang {
     @JsonIgnore
     @JoinColumn(name = "ma_giam_gia_id", nullable = true)
     private MaGiamGia magiamgia;
-    public int getMaGiamGiaId(){
+    public Integer getMaGiamGiaId(){
+        if(getMagiamgia()==null)
+        return null;
         return getMagiamgia().getID();
     }
 }
