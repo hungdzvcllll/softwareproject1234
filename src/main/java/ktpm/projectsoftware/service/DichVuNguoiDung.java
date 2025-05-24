@@ -144,4 +144,13 @@ public class DichVuNguoiDung {
         NguoiDung nd=timNguoiDungHienTai();
         return repo.timKiemGioHang(nd.getID());
     }
+    public void update(NguoiDung nd){
+        NguoiDung ndht=timNguoiDungHienTai();
+        ndht.setGioiTinh(nd.getGioiTinh());
+        ndht.setDiaChi(nd.getDiaChi());
+        ndht.setSoDienThoai(nd.getSoDienThoai());
+        ndht.setTen(nd.getTen());
+        ndht.setUsername(nd.getUsername());
+        repo.save(ndht);       
+    }
 }

@@ -173,4 +173,14 @@ public class NguoiDungController {
         }
         
     }
+    @PostMapping("/updateUser")
+    public ResponseEntity<?> update(@RequestBody NguoiDung nd){
+        try{
+            dv.update(nd);
+            return ResponseEntity.ok("cập nhật thành công");
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }
